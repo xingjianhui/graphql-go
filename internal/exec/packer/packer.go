@@ -357,6 +357,16 @@ func unmarshalInput(typ reflect.Type, input interface{}) (interface{}, error) {
 				return nil, fmt.Errorf("not a 64-bit integer")
 			}
 			return int64(input), nil
+		case int32:
+			if input < math.MinInt32 || input > math.MaxInt32 {
+				return nil, fmt.Errorf("not a 32-bit integer")
+			}
+			return int64(input), nil
+		case int64:
+			if input < math.MinInt64 || input > math.MaxInt64 {
+				return nil, fmt.Errorf("not a 64-bit integer")
+			}
+			return int64(input), nil
 		case float64:
 			coerced := int64(input)
 			if input < math.MinInt64 || input > math.MaxInt64 || float64(coerced) != input {
