@@ -32,10 +32,23 @@ func (val *PrimitiveValue) Deserialize(vars map[string]interface{}) interface{} 
 	switch val.Type {
 	case scanner.Int:
 		value, err := strconv.ParseInt(val.Text, 10, 32)
-		if err != nil {
+		// if err != nil {
+		// 	panic(err)
+		// }
+		// return int32(value)
+		
+		// @xingjianhui
+		if err != nil && err.(*strconv.NumError).Err.Error() == "value out of range" {
+                    value, err := strconv.ParseInt(val.Text, 10, 64)
+		    if err != nil {
 			panic(err)
+                    }
+                    return int64(value)
+                } else if err !=nil {
+                    panic(err)
 		}
-		return int32(value)
+                return int32(value)
+                // @xingjianhui
 
 	case scanner.Float:
 		value, err := strconv.ParseFloat(val.Text, 64)
